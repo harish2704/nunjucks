@@ -293,8 +293,12 @@ var Environment = Obj.extend({
     render: function(name, ctx, cb) {
         if(lib.isFunction(ctx)) {
             cb = ctx;
-            ctx = null;
+            ctx = {};
         }
+        // Clone the ctx to avoid mutation from nunjucks.
+        ctx = Object.assign( {}, ctx );
+        // Keep a variable to store the rootState.
+        ctx.$rootState = {};
 
         // We support a synchronous API to make it easier to migrate
         // existing code to async. This works because if you don't do
